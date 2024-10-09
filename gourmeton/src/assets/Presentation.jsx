@@ -4,18 +4,19 @@ import styled from 'styled-components';
 const PresentationWrapper = styled.section`
   padding: 50px;
   text-align: center;
-  background-color: #fff;
+  background-color: #ff6347;
 `;
 
 const Title = styled.h2`
   font-size: 2.5rem;
-  color: #333;
+  color: white;
 `;
 
 const Text = styled.p`
   font-size: 1.1rem;
   max-width: 800px;
   margin: 20px auto;
+  color: white;
 `;
 
 const Presentation = () => {

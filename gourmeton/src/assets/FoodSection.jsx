@@ -1,19 +1,23 @@
-// src/components/FoodSection.jsx
+// src/assets/FoodSection.jsx
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { fetchFoodItems } from '../APIService';
 
 // Estilos usando Styled Components
 const SectionWrapper = styled.section`
   padding: 50px;
-  background-color: #f8f9fa;
+  background-color: #ff6347;
   text-align: center;
 `;
 
-// Adiciona o FoodGrid aqui
+const Title = styled.h2`
+  color: #ffffff; 
+  margin-bottom: 20px; 
+  font-size: 38px;
+`;
+
 const FoodGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); // Se adapta ao tamanho da tela
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   margin-top: 20px;
 `;
@@ -48,27 +52,51 @@ const FoodDescription = styled.p`
   color: #666;
 `;
 
+// Função para remover tags HTML da descrição
+const stripHtmlTags = (text) => {
+  return text.replace(/<\/?[^>]+(>|$)/g, ""); // Remove qualquer tag HTML
+};
+
 // Componente principal para a seção de comidas
 const FoodSection = () => {
   const [foods, setFoods] = useState([]);
 
   useEffect(() => {
     const getFoodItems = async () => {
-      const items = await fetchFoodItems();
-      setFoods(items);
+      try {
+        const response = await fetch('https://api.spoonacular.com/recipes/random?apiKey=da2289a580ab4a529e0d5a6e701c07d4&number=4');
+        if (!response.ok) {
+          throw new Error('Falha ao buscar os itens da comida');
+        }
+        const data = await response.json();
+
+        const items = data.recipes.map(item => ({
+          id: item.id,
+          title: item.title,
+          image: item.image,
+          description: stripHtmlTags(item.summary).length > 100 
+            ? `${stripHtmlTags(item.summary).substring(0, 100)}...` 
+            : stripHtmlTags(item.summary) || 'Delicioso prato disponível!',
+        }));
+
+        setFoods(items);
+      } catch (error) {
+        console.error(error);
+      }
     };
+
     getFoodItems();
   }, []);
 
   return (
     <SectionWrapper>
-      <h2>Explore Nossos Pratos</h2>
-      <FoodGrid> {/* Usa o FoodGrid para organizar as comidas */}
+      <Title>Explore Nossos Pratos</Title>
+      <FoodGrid>
         {foods.map((food) => (
           <FoodCard key={food.id}>
             <FoodImage src={food.image} alt={food.title} />
             <FoodTitle>{food.title}</FoodTitle>
-            <FoodDescription>{food.description || 'Delicioso prato disponível!'}</FoodDescription>
+            <FoodDescription>{food.description}</FoodDescription>
           </FoodCard>
         ))}
       </FoodGrid>
