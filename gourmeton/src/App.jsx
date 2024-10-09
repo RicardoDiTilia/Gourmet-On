@@ -6,6 +6,7 @@ import Features from './assets/Features';
 import Testimonials from './assets/Testimonial';
 import ContactForm from './assets/ContactForm';
 import Footer from './assets/Footer';
+import FoodSection from './assets/FoodSection';
 
 function App() {
   const [dishes, setDishes] = useState([]);
@@ -27,6 +28,7 @@ function App() {
       <HeroSection />
       <Presentation />
       <Features />
+      <FoodSection />
       <Testimonials />
       <ContactForm />
       <Footer />
