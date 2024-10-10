@@ -20,8 +20,8 @@ const HeroWrapper = styled.section`
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5); // Cor preta com 50% de opacidade
-    z-index: 1; // Coloca o overlay atrás do texto
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 1; 
   }
 `;
 
@@ -53,12 +53,18 @@ const Button = styled.button`
   }
 `;
 
-const HeroSection = ({ scrollToFoodSection }) => {
+const HeroSection = ({ testimonialsRef }) => {
+  const scrollToTestimonials = () => {
+    if (testimonialsRef.current) {
+      testimonialsRef.current.scrollIntoView({ behavior: 'smooth' }); // Scroll suave
+    }
+  };
+
   return (
     <HeroWrapper>
       <Title>GourmetOn</Title>
       <Description>O melhor delivery de comida ao seu alcance!</Description>
-      <Button onClick={scrollToFoodSection}>Nos Conheça</Button>
+      <Button onClick={scrollToTestimonials}>Nos Conheça</Button>
     </HeroWrapper>
   );
 };

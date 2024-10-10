@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { GlobalStyle } from './styles/GlobalStyles';
 import HeroSection from './assets/HeroSection';
 import Presentation from './assets/Presentation';
 import Features from './assets/Features';
-import Testimonials from './assets/Testimonial';
+import Testimonials from './assets/Testimonial'; // Certifique-se de que o caminho esteja correto
 import ContactForm from './assets/ContactForm';
 import Footer from './assets/Footer';
 import FoodSection from './assets/FoodSection';
 
 function App() {
   const [dishes, setDishes] = useState([]);
+  const foodSectionRef = useRef(null); // Ref para a FoodSection
+  const testimonialsRef = useRef(null); // Ref para a Testimonials
 
   useEffect(() => {
     const fetchDishes = async () => {
@@ -25,11 +27,17 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <HeroSection />
+      {/* Passa o testimonialsRef para o HeroSection */}
+      <HeroSection foodSectionRef={foodSectionRef} testimonialsRef={testimonialsRef} /> 
       <Presentation />
       <Features />
-      <FoodSection />
-      <Testimonials />
+      <div ref={foodSectionRef}>
+        <FoodSection dishes={dishes} />
+      </div>
+      {/* Passa o ref para a seção de Testimonials */}
+      <div ref={testimonialsRef}>
+        <Testimonials />
+      </div>
       <ContactForm />
       <Footer />
     </>
